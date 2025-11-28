@@ -140,7 +140,7 @@ def get_qsettings() -> QSettings:
         QSettings: The QSettings object for the Snowflake QGIS plugin.
     """
     return QSettings(
-        QSettings.IniFormat, QSettings.UserScope, "Snowflake", "SF_QGIS_PLUGIN"
+        QSettings.Format.IniFormat, QSettings.Scope.UserScope, "Snowflake", "SF_QGIS_PLUGIN"
     )
 
 
@@ -229,7 +229,7 @@ def on_handle_error(title: str, message: str) -> None:
     Returns:
         None
     """
-    QMessageBox.critical(None, title, message, QMessageBox.Ok)
+    QMessageBox.critical(None, title, message, QMessageBox.StandardButton.Ok)
 
 
 def on_handle_warning(title: str, message: str) -> None:
@@ -243,7 +243,7 @@ def on_handle_warning(title: str, message: str) -> None:
     Returns:
         None
     """
-    QMessageBox.warning(None, title, message, QMessageBox.Ok)
+    QMessageBox.warning(None, title, message, QMessageBox.StandardButton.Ok)
 
 
 def check_package_installed(package_name) -> bool:
@@ -279,13 +279,8 @@ def check_install_package(package_name) -> None:
         import platform
         import sys
         import os
-
-        if platform.system() == "Windows":
-            prefixPath = sys.exec_prefix
-            python3_path = os.path.join(prefixPath, "python3")
-        else:
-            prefixPath = sys.exec_prefix
-            python3_path = os.path.join(prefixPath, "bin", "python3")
+        
+        python3_path = os.path.split(sys.executable)[0] + '/python'
         subprocess.call([python3_path, "-m", "pip", "install", "pip", "—upgrade"])
         subprocess.call(
             [
@@ -342,12 +337,7 @@ def uninstall_snowflake_connector_package() -> None:
     import platform
     import sys
 
-    if platform.system() == "Windows":
-        prefixPath = sys.exec_prefix
-        python3_path = os.path.join(prefixPath, "python3")
-    else:
-        prefixPath = sys.exec_prefix
-        python3_path = os.path.join(prefixPath, "bin", "python3")
+    python3_path = os.path.split(sys.executable)[0] + '/python'
     subprocess.call(
         [
             python3_path,
@@ -541,7 +531,7 @@ def prompt_and_get_primary_key(context_information: dict, data_type: str) -> str
         )
 
         primary_key = (
-            primary_key_selected if message_box_accept == QMessageBox.Ok else ""
+            primary_key_selected if message_box_accept == QMessageBox.StandardButton.Ok else ""
         )
 
     return primary_key

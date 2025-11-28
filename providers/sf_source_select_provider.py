@@ -1,4 +1,4 @@
-from ..ui.sf_data_source_manager_widget import SFDataSourceManagerWidget
+from ..ui.sf_data_source_manager_widget import Ui_QgsDbSourceSelectBase as SFDataSourceManagerWidget
 from qgis.core import QgsProviderRegistry
 from qgis.gui import QgsAbstractDataSourceWidget, QgsSourceSelectProvider
 from qgis.PyQt.QtCore import Qt
@@ -38,7 +38,8 @@ class SFSourceSelectProvider(QgsSourceSelectProvider):
         Returns:
             QgsAbstractDataSourceWidget: The created data source widget.
         """
-        return SFDataSourceManagerWidget(parent)
+        ui = SFDataSourceManagerWidget()
+        return ui.setupUi(parent)
 
     def providerKey(self) -> str:
         """
